@@ -1,2 +1,2 @@
 # QT_xmlToBinary
-produce the binary files by xml config, dev on the QT framework
+produce excel data to the binary files by xml config, dev on the QT framework
