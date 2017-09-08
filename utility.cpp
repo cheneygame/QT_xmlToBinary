@@ -26,6 +26,8 @@ int GetFiledType(QString type_name)
         type = SELF＿TYPE_SHORT;
     else if(type_name == "double")
         type = SELF＿TYPE_DOUBLE;
+    else if(type_name == "float")
+        type = SELF＿TYPE_FLOAT;
     return type;
 }
 
@@ -102,9 +104,18 @@ int CopyValueToBuf(struct ST_FIELD_INFO st_field,QVariant &value,char*buf,int &m
     else if(st_field.type == SELF＿TYPE_DOUBLE)
     {
         double data = value.toDouble();
-        size = sizeof(data);
+        size = sizeof(double);
         memcpy(buf,&data,size);
         max_size= size;
+        //qDebug() << "SELF＿TYPE_DOUBLE:" <<size<<"|"<<sizeof(data)<<"|"<<data<<"|"<<value;
+    }
+    else if(st_field.type == SELF＿TYPE_FLOAT)
+    {
+        float data = value.toFloat();
+        size = sizeof(float);
+        memcpy(buf,&data,size);
+        max_size= size;
+        //qDebug() << "SELF＿TYPE_FLOAT:" <<size<<"|"<<sizeof(data)<<"|"<<data<<"|"<<value;
     }
     return st_field.type;
 
@@ -143,7 +154,7 @@ bool parseExcel_Xml(QString file_name,struct ST_EXCEL_INFO &st_config)
       QFile file(file_name);
       if(!file.open(QFile::ReadOnly | QFile::Text))
       {
-          QMessageBox::information(NULL, QString("title"), QString("open error 2!"));
+          QMessageBox::information(NULL, QString("title"), QString("open error 2!")+file_name);
 
           return false;
       }
@@ -217,7 +228,7 @@ void parseConfig_Xml(QString file_name,struct ST_CONFIG_INFO &st_config)
       QFile file(file_name);
       if(!file.open(QFile::ReadOnly | QFile::Text))
       {
-          QMessageBox::information(NULL, QString("title"), QString("open error 2!"));
+          QMessageBox::information(NULL, QString("title"), QString("open error 2!")+file_name);
 
           return;
       }
@@ -271,6 +282,7 @@ void parseConfig_Xml(QString file_name,struct ST_CONFIG_INFO &st_config)
 
 bool XLSX2TBL(QString excel_path_name,QString output_path_name,struct ST_EXCEL_INFO &st_xml_info)
 {
+    qDebug() << excel_path_name;
     QString excel_file_name =  excel_path_name+(st_xml_info.excel_file_name);
     QString tbl_file_name = output_path_name+(st_xml_info.output_file_name);
     addLine(QString("parseEXCEL: ")+excel_file_name,true);
@@ -296,6 +308,7 @@ bool XLSX2TBL(QString excel_path_name,QString output_path_name,struct ST_EXCEL_I
         ++max_column;
     }
     addLine((QString("max column: %1").arg(max_column)));
+
 
 
     //get need column seq by xml
