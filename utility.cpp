@@ -109,13 +109,13 @@ int CopyValueToBuf(struct ST_FIELD_INFO st_field,QVariant &value,char*buf,int &m
         max_size= size;
         //qDebug() << "SELF＿TYPE_DOUBLE:" <<size<<"|"<<sizeof(data)<<"|"<<data<<"|"<<value;
     }
-    else if(st_field.type == SELF＿TYPE_FLOAT)
+    else if(st_field.type == SELF＿TYPE_FLOAT) //should not use float in lua
     {
         float data = value.toFloat();
         size = sizeof(float);
         memcpy(buf,&data,size);
         max_size= size;
-        //qDebug() << "SELF＿TYPE_FLOAT:" <<size<<"|"<<sizeof(data)<<"|"<<data<<"|"<<value;
+        //qDebug() << "SELF＿TYPE_FLOAT:" <<size<<"|"<<sizeof(data)<<"|"<<data<<"|t1:"<<t1<<"|aa:"<<aa;
     }
     return st_field.type;
 
